@@ -418,16 +418,3 @@ rate-limit demo.
   either confirm your `Sender` rows have distinct `smtpUser` values after
   seeding, or set `WORKER_CONCURRENCY=1` temporarily.
 
----
-
-## 10. Submission checklist
-
-- [ ] Private GitHub repo, access granted to reviewers
-- [x] README: run instructions, env vars, Google/Slack setup, architecture,
-      chosen values, features-to-requirements map, assumptions/trade-offs
-- [ ] Demo video (≤5 min): login → compose/CSV/schedule → Scheduled/Sent
-      tables + Ethereal preview + ES search → restart test → load test +
-      rate-limit + live Slack message
-- [x] Automated tests: rate limiter (pure + Redis), Zod schemas, idempotent
-      claim (Postgres integration), CSV lead parser
-- [x] `.env.example` committed for both apps, no real secrets in the repo
