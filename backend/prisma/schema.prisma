@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  googleId  String   @unique
+  email     String   @unique
+  name      String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+
+  campaigns        Campaign[]
+  emails           Email[]
+  slackConnection  SlackConnection?
+}
+
+model SlackConnection {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId      String
+  teamName    String
+  channelId   String?
+  webhookUrl  String
+  accessToken String
+  connectedAt DateTime  @default(now())
+  revokedAt   DateTime?
+}
+
+model Sender {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  smtpHost    String
+  smtpPort    Int
+  smtpUser    String
+  smtpPass    String
+  hourlyLimit Int?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  emails Email[]
+}
+
+model Campaign {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject         String
+  body            String
+  startAt         DateTime
+  delayBetweenMs  Int
+  hourlyLimit     Int
+  totalCount      Int
+  createdAt       DateTime @default(now())
+
+  emails Email[]
+
+  @@index([userId])
+}
+
+model Email {
+  id              String    @id @default(uuid())
+  campaignId      String
+  campaign        Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  senderId        String
+  sender          Sender    @relation(fields: [senderId], references: [id])
+  toEmail         String
+  subject         String
+  body            String
+  scheduledAt     DateTime
+  seq             Int
+  status          String    @default("scheduled")
+  attempts        Int       @default(0)
+  messageId       String?
+  previewUrl      String?
+  sentAt          DateTime?
+  error           String?
+  idempotencyKey  String    @unique
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId, status, scheduledAt])
+  @@index([senderId, status])
+}

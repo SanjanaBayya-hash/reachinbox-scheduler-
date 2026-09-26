@@ -1,0 +1,21 @@
+{
+  "name": "reachinbox-scheduler",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev --workspace backend",
+    "dev:worker": "npm run dev:worker --workspace backend",
+    "dev:web": "npm run dev --workspace frontend",
+    "build:api": "npm run build --workspace backend",
+    "build:web": "npm run build --workspace frontend",
+    "prisma:migrate": "npm run prisma:migrate --workspace backend",
+    "seed:senders": "npm run seed:senders --workspace backend",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "test": "npm test --workspace frontend && npm test --workspace backend"
+  }
+}
