@@ -17,7 +17,6 @@ alerts, Elasticsearch search, and Google-authenticated dashboard.
 7. [Features mapped to requirements](#7-features-mapped-to-requirements)
 8. [Testing](#8-testing)
 9. [Assumptions, shortcuts, and trade-offs](#9-assumptions-shortcuts-and-trade-offs)
-10. [Submission checklist](#10-submission-checklist)
 
 ---
 
